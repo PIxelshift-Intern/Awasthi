@@ -1,0 +1,16 @@
+[project]
+name = "todo-auth"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.14.1",
+    "fastapi[standard]>=0.115.8",
+    "passlib[bcrypt]>=1.7.4",
+    "psycopg2-binary[bcrypt]>=2.9.10",
+    "pydantic-settings[bcrypt]>=2.7.1",
+    "python-jose[cryptography]>=3.3.0",
+    "sqlalchemy[bcrypt]>=2.0.37",
+    "uvicorn[bcrypt]>=0.34.0",
+]
