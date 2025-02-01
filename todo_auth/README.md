@@ -47,6 +47,64 @@ todo_auth/
 uv run uvicorn app.main:app --port 8000
 ```
 
+### Deploying Using Docker on local server
+
+## Docker Image contains everything needed to run an application, including the application code, runtime, libraries, environment variables, and dependencies of the project.
+
+Its features are 
+>Immutable
+>Portable
+>Reusability
+
+## Basic Workflows
+Create a Dockerfile: This file contains the instructions to build your Docker image.
+```Dockerfile
+# Use Python 3.12-slim as the base image
+FROM python:3.12-slim-bookworm
+
+# Copy `uv` package manager from Astral's repository
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy the entire project into the container
+ADD . /app
+
+# Install dependencies using `uv`
+RUN uv sync --frozen
+
+# Expose the port FastAPI will run on
+EXPOSE 8000
+
+# Start FastAPI with Uvicorn
+CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+```
+Build the Docker Image: Using the docker build command, you create an image from the Dockerfile.
+
+```sh
+docker build -t my-fastapi-app .
+```
+Run a Docker Container: You use the image to create and run a container with the docker run command.
+```sh
+docker run -d -p 8000:8000 my-fastapi-app
+```
+Check if its running
+```sh
+docker ps
+```
+To check Terminal Logs 
+```sh
+docker logs -f 00c1d80afcf1  # Use container ID
+```
+
+## Automatically generated API documentation pages provided by FastAPI.
+Swagger UI(http://localhost:8000/docs) 
+ReDoc UI(http://localhost:8000/redoc)
+
+
+
 ## Database Migrations with Alembic
 
 ### Initialize Alembic
