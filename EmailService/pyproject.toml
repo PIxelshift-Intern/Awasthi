@@ -7,8 +7,14 @@ requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.15.1",
     "fastapi[standard]>=0.115.11",
+    "httpx>=0.28.1",
     "psycopg2-binary>=2.9.10",
+    "pydantic>=2.10.6",
     "pydantic-settings>=2.8.1",
+    "pytest>=8.3.5",
+    "python-jose[cryptography]>=3.4.0",
+    "python-multipart>=0.0.20",
+    "sendgrid>=6.11.0",
     "sqlalchemy>=2.0.38",
     "uvicorn>=0.34.0",
 ]
