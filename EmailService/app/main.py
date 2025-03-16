@@ -1,25 +1,19 @@
-from fastapi import FastAPI, Depends
-from fastapi.middleware.cors import CORSMiddleware
-
-from app.api.routes import router as api_router
+# app/main.py (updated)
+from fastapi import FastAPI
+from app.db.db import Base, engine
 from app.config import get_settings
+from app.api.routes import router
+from app.core.logging_config import setup_logging
 
+# Setup logging
+setup_logging()
+
+app = FastAPI()
 settings = get_settings()
 
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
-)
+Base.metadata.create_all(bind=engine)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
     import uvicorn

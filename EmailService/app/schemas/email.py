@@ -1,110 +1,63 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import List, Optional, Dict, Any
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
-
+from typing import Optional
 
 class SubscriberBase(BaseModel):
     email: EmailStr
     name: Optional[str] = None
 
-
 class SubscriberCreate(SubscriberBase):
-    pass
+    list_id: int
 
-
-class SubscriberUpdate(SubscriberBase):
-    is_active: Optional[bool] = None
-
-
-class Subscriber(SubscriberBase):
+class SubscriberResponse(SubscriberBase):
     id: int
     is_active: bool
     created_at: datetime
     
     class Config:
-        from_attributes = True
-
-
-class SubscriberListBase(BaseModel):
-    name: str
-    description: Optional[str] = None
-
-
-class SubscriberListCreate(SubscriberListBase):
-    pass
-
-
-class SubscriberListUpdate(SubscriberListBase):
-    pass
-
-
-class SubscriberList(SubscriberListBase):
-    id: int
-    created_at: datetime
-    
-    class Config:
-        from_attributes = True
-
-
-class SubscriberListWithMembers(SubscriberList):
-    subscribers: List[Subscriber] = []
-
+        from_attributes = True 
 
 class CampaignBase(BaseModel):
     name: str
     subject: str
     body: str
-    is_html: bool = True
-    scheduled_at: Optional[datetime] = None
-
 
 class CampaignCreate(CampaignBase):
     list_id: int
 
-
-class CampaignUpdate(CampaignBase):
-    list_id: Optional[int] = None
-
-
-class Campaign(CampaignBase):
+class CampaignResponse(CampaignBase):
     id: int
     created_at: datetime
     sent_at: Optional[datetime] = None
-    owner_id: int
     list_id: int
     
     class Config:
         from_attributes = True
+        model_config = {"populate_by_name": True}
+        json_schema_extra = {
+            "example": {
+                "id": 1,
+                "name": "Welcome Campaign",
+                "subject": "Welcome to our service",
+                "body": "Thank you for subscribing!",
+                "created_at": "2023-01-01T00:00:00",
+                "sent_at": None,
+                "list_id": 1
+            }
+        }
+        field_customization = {
+            "body": {"alias": "body"}
+        }
 
+class MessageResponse(BaseModel):
+    message: str
+    campaign_id: Optional[int] = None
+    subscriber_count: Optional[int] = None
 
-class EmailLogBase(BaseModel):
-    recipient_email: EmailStr
-    status: str
-    message_id: Optional[str] = None
-
-
-class EmailLog(EmailLogBase):
+class ListResponse(BaseModel):
     id: int
-    sent_at: datetime
-    campaign_id: int
+    name: str
+    created_at: datetime
     
     class Config:
         from_attributes = True
-
-
-class CampaignWithStats(Campaign):
-    total_sent: int = 0
-    delivered: int = 0
-    opened: int = 0
-    clicked: int = 0
-    bounced: int = 0
-
-
-class SendTestEmail(BaseModel):
-    campaign_id: int
-    test_emails: List[EmailStr]
-
-
-class SendCampaign(BaseModel):
-    campaign_id: int
-    send_now: bool = True

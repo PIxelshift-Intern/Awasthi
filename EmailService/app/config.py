@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     SENDGRID_FROM_EMAIL: str
     
     # Database
-    DATABASE_URL: str = "postgresql+psycopg2://sushil:1234@localhost:5432/xxx"
+    DATABASE_URL: str 
     
     class Config:
         env_file = ".env"
