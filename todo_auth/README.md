@@ -17,6 +17,11 @@ uv add python-jose --extra cryptography
 uv add alembic
 ```
 
+### Alembic Init
+```
+alembic init alembic
+```
+
 ## Folder Structure
 ```
 todo_auth/
