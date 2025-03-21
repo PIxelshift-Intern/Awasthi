@@ -1,0 +1,5 @@
+2025-03-16 11:41:42,848 - app.services.email - ERROR - Failed to send email: HTTP Error 403: Forbidden
+2025-03-16 11:48:33,444 - app.services.email - ERROR - Failed to send email: HTTP Error 403: Forbidden
+2025-03-16 11:50:10,739 - app.services.email - INFO - Email sent successfully. Status: 202
+2025-03-16 12:14:10,069 - app.services.email - INFO - Email sent successfully. Status: 202
+2025-03-16 12:19:49,741 - app.services.email - INFO - Email sent successfully. Status: 202
